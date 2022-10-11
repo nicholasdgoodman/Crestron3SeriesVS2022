@@ -4,11 +4,24 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrestronProgram", "MyCrestronProgram\MyCrestronProgram.csproj", "{D9933AF7-FC19-4E71-A0CC-E582578B7E44}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6A789246-8AF2-4AA0-857A-3E3116CBFFF5} = {6A789246-8AF2-4AA0-857A-3E3116CBFFF5}
-	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssemblySign", "AssemblySign\AssemblySign.csproj", "{6A789246-8AF2-4AA0-857A-3E3116CBFFF5}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{9189C5C5-B1B6-4116-84BA-E1578085E63F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyCrestronModule", "MyCrestronModule\MyCrestronModule.csproj", "{856CA6C5-EE32-45AE-8A10-E19DB168F455}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{8BDB78E5-2AA8-46BB-89F7-933BCEEC0CE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssemblySign", "Build\AssemblySign\AssemblySign.csproj", "{6A789246-8AF2-4AA0-857A-3E3116CBFFF5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UspGenerator", "Build\UspGenerator\UspGenerator.csproj", "{9BCE8943-8F5D-42AA-93DF-3FF1A6DC8386}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrestronModuleCore", "Core\CrestronModuleCore\CrestronModuleCore.csproj", "{015F3B33-AD8A-4CED-B600-168CFA97A370}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AC90D423-B3A4-479B-8D67-72F1CDD6BDBA}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,13 +33,30 @@ Global
 		{D9933AF7-FC19-4E71-A0CC-E582578B7E44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9933AF7-FC19-4E71-A0CC-E582578B7E44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9933AF7-FC19-4E71-A0CC-E582578B7E44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{856CA6C5-EE32-45AE-8A10-E19DB168F455}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{856CA6C5-EE32-45AE-8A10-E19DB168F455}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{856CA6C5-EE32-45AE-8A10-E19DB168F455}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{856CA6C5-EE32-45AE-8A10-E19DB168F455}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6A789246-8AF2-4AA0-857A-3E3116CBFFF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6A789246-8AF2-4AA0-857A-3E3116CBFFF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A789246-8AF2-4AA0-857A-3E3116CBFFF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A789246-8AF2-4AA0-857A-3E3116CBFFF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BCE8943-8F5D-42AA-93DF-3FF1A6DC8386}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BCE8943-8F5D-42AA-93DF-3FF1A6DC8386}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BCE8943-8F5D-42AA-93DF-3FF1A6DC8386}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BCE8943-8F5D-42AA-93DF-3FF1A6DC8386}.Release|Any CPU.Build.0 = Release|Any CPU
+		{015F3B33-AD8A-4CED-B600-168CFA97A370}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{015F3B33-AD8A-4CED-B600-168CFA97A370}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{015F3B33-AD8A-4CED-B600-168CFA97A370}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{015F3B33-AD8A-4CED-B600-168CFA97A370}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6A789246-8AF2-4AA0-857A-3E3116CBFFF5} = {9189C5C5-B1B6-4116-84BA-E1578085E63F}
+		{9BCE8943-8F5D-42AA-93DF-3FF1A6DC8386} = {9189C5C5-B1B6-4116-84BA-E1578085E63F}
+		{015F3B33-AD8A-4CED-B600-168CFA97A370} = {8BDB78E5-2AA8-46BB-89F7-933BCEEC0CE5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8DE38167-5329-4CE4-A8BA-37D6A2A1F85F}

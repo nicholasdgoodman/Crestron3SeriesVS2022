@@ -133,7 +133,7 @@
     <None Include="packages.config" />
   </ItemGroup>
 	<Target Name="SandboxSignOutput" BeforeTargets="SimplSharpPostProcess">
-		<Exec Command="$(ProjectDir)\..\AssemblySign\bin\$(Configuration)\AssemblySign.exe $(TargetPath)" />
+		<Exec Command="$(SolutionDir)Build\bin\AssemblySign.exe $(TargetPath)" />
 	</Target>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Crestron.SimplSharp.SDK.Library.2.19.15\build\Crestron.SimplSharp.SDK.Library.targets" Condition="Exists('..\packages\Crestron.SimplSharp.SDK.Library.2.19.15\build\Crestron.SimplSharp.SDK.Library.targets')" />

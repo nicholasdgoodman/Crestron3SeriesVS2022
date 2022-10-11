@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net35</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <NoStdLib>true</NoStdLib>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <WindowsCeSdkRoot>C:\Program Files (x86)\Microsoft.NET\SDK\CompactFramework\v3.5\WindowsCE</WindowsCeSdkRoot>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="lib\**" />
+    <EmbeddedResource Remove="lib\**" />
+    <None Remove="lib\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib">
+      <HintPath>$(WindowsCeSdkRoot)\mscorlib.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="SmartThreadPoolCE">
+      <HintPath>lib\SmartThreadPoolCE.dll</HintPath>
+    </Reference>
+    <Reference Include="SplusObjects">
+      <HintPath>lib\SplusObjects.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>$(WindowsCeSdkRoot)\System.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <HintPath>$(WindowsCeSdkRoot)\System.Core.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="SignAssembly" AfterTargets="Build">
+    <Exec Command="$(SolutionDir)Build\bin\AssemblySign.exe $(TargetPath)" />
+  </Target>
+
+</Project>
