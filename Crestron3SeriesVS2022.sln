@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrestronProgram", "MyCrestronProgram\MyCrestronProgram.csproj", "{D9933AF7-FC19-4E71-A0CC-E582578B7E44}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6A789246-8AF2-4AA0-857A-3E3116CBFFF5} = {6A789246-8AF2-4AA0-857A-3E3116CBFFF5}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssemblySign", "AssemblySign\AssemblySign.csproj", "{6A789246-8AF2-4AA0-857A-3E3116CBFFF5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D9933AF7-FC19-4E71-A0CC-E582578B7E44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9933AF7-FC19-4E71-A0CC-E582578B7E44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9933AF7-FC19-4E71-A0CC-E582578B7E44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9933AF7-FC19-4E71-A0CC-E582578B7E44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A789246-8AF2-4AA0-857A-3E3116CBFFF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A789246-8AF2-4AA0-857A-3E3116CBFFF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A789246-8AF2-4AA0-857A-3E3116CBFFF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A789246-8AF2-4AA0-857A-3E3116CBFFF5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8DE38167-5329-4CE4-A8BA-37D6A2A1F85F}
+	EndGlobalSection
+EndGlobal
