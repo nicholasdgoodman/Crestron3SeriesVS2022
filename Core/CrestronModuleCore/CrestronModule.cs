@@ -15,8 +15,8 @@ namespace MyCrestronModule
 
     public interface ICrestronModuleBuilder
     {
-        Input<int> CreateDigitalInput(string name, Action<int> onChange);
-        Output<int> CreateDigitalOutput(string name);
+        Input<bool> CreateDigitalInput(string name, Action<bool> onChange);
+        Output<bool> CreateDigitalOutput(string name);
     }
 
     public interface ICrestronLogger
@@ -35,7 +35,7 @@ namespace MyCrestronModule
         T Value { get; set; }
     }
 
-    internal class DigitalInputWrapper : Input<int>
+    internal class DigitalInputWrapper : Input<bool>
     {
         DigitalInput input;
 
@@ -44,13 +44,13 @@ namespace MyCrestronModule
             this.input = input;
         }
 
-        public int Value
+        public bool Value
         {
-            get { return this.input.Value; }
+            get { return this.input.Value == 0 ? false: true; }
         }
     }
 
-    internal class DigitalOutputWrapper: Output<int>
+    internal class DigitalOutputWrapper: Output<bool>
     {
         DigitalOutput output;
 
@@ -59,10 +59,10 @@ namespace MyCrestronModule
             this.output = output;
         }
 
-        public int Value
+        public bool Value
         {
-            get { return this.output.Value; }
-            set { this.output.Value = value; }
+            get { return this.output.Value == 0 ? false : true; }
+            set { this.output.Value = value ? 1 : 0; }
         }
     }
 
@@ -93,8 +93,8 @@ namespace MyCrestronModule
                         .Invoke(new object[] { this, this }) as ICrestronModule;
                 }
             }
-            catch (Exception ex) { base.ObjectCatchHandler(ex); }
-            finally { base.ObjectFinallyHandler(); }
+            catch (Exception ex) { this.ObjectCatchHandler(ex); }
+            finally { this.ObjectFinallyHandler(); }
         }
 
         public override object FunctionMain(object __obj__)
@@ -107,35 +107,50 @@ namespace MyCrestronModule
                 var initializableModule = this.moduleImpl as IInitializable;
                 if (initializableModule != null) initializableModule.Initialize();
             }
-            catch (Exception ex) { base.ObjectCatchHandler(ex); }
-            finally { base.ObjectFinallyHandler(); }
+            catch (Exception ex) { this.ObjectCatchHandler(ex); }
+            finally { this.ObjectFinallyHandler(); }
             return __obj__;
         }
 
-        public Input<int> CreateDigitalInput(string name, Action<int> onChange)
+        protected override void ObjectCatchHandler(Exception e)
+        {
+            this.Trace("ObjectCatchHandler: {0}", e.Message);
+            base.ObjectCatchHandler(e);
+        }
+
+        protected override void ObjectFinallyHandler()
+        {
+            this.Trace("ObjectFinallyHandler");
+            base.ObjectFinallyHandler();
+        }
+
+        public Input<bool> CreateDigitalInput(string name, Action<bool> onChange)
         {
             var join = (uint)m_DigitalInputList.Count;
             var input = new DigitalInput(join, this);
+            this.Trace("CreateDigitalInput {0}", join);
             m_DigitalInputList.Add(join, input);
             if (onChange != null) BindDigitalInput(input, onChange);
             return new DigitalInputWrapper(input);
         }
-        public Output<int> CreateDigitalOutput(string name)
+        public Output<bool> CreateDigitalOutput(string name)
         {
             var join = (uint)m_DigitalOutputList.Count;
             var output = new DigitalOutput(join, this);
+            this.Trace("CreateDigitalOutput {0}", join);
             m_DigitalOutputList.Add(join, output);
             return new DigitalOutputWrapper(output);
         }
-        public void BindDigitalInput(DigitalInput input, Action<int> onChange)
+        public void BindDigitalInput(DigitalInput input, Action<bool> onChange)
         {
             input.OnDigitalChange.Add(new InputChangeHandlerWrapper(o =>
             {
+                this.Trace("OnDigitalChange");
                 var e = o as SignalEventArgs;
                 try
                 {
                     var ctx = this.SplusThreadStartCode(e);
-                    if (onChange != null) onChange(input.Value);
+                    if (onChange != null) onChange(input.Value == 0 ? false : true);
                 }
                 catch (Exception ex) { this.ObjectCatchHandler(ex); }
                 finally { this.ObjectFinallyHandler(e); }

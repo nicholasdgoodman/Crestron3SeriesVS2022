@@ -61,7 +61,7 @@ namespace UspGenerator
                 moduleSb.AppendLine();
             }
 
-            public MyCrestronModule.Input<int> CreateDigitalInput(string name, Action<int> onChange)
+            public MyCrestronModule.Input<bool> CreateDigitalInput(string name, Action<bool> onChange)
             {
                 moduleSb.Append("DIGITAL_INPUT ");
                 moduleSb.Append(name);
@@ -69,7 +69,7 @@ namespace UspGenerator
                 return null;
             }
 
-            public MyCrestronModule.Output<int> CreateDigitalOutput(string name)
+            public MyCrestronModule.Output<bool> CreateDigitalOutput(string name)
             {
                 moduleSb.Append("DIGITAL_OUTPUT ");
                 moduleSb.Append(name);

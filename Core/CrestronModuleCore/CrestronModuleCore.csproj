@@ -7,6 +7,7 @@
     <NoStdLib>true</NoStdLib>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <WindowsCeSdkRoot>C:\Program Files (x86)\Microsoft.NET\SDK\CompactFramework\v3.5\WindowsCE</WindowsCeSdkRoot>
+    <SplusDependenciesRoot>$(BaseIntermediateOutputPath)</SplusDependenciesRoot>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,12 +20,6 @@
       <HintPath>$(WindowsCeSdkRoot)\mscorlib.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="SmartThreadPoolCE">
-      <HintPath>lib\SmartThreadPoolCE.dll</HintPath>
-    </Reference>
-    <Reference Include="SplusObjects">
-      <HintPath>lib\SplusObjects.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <HintPath>$(WindowsCeSdkRoot)\System.dll</HintPath>
       <Private>false</Private>
@@ -33,8 +28,20 @@
       <HintPath>$(WindowsCeSdkRoot)\System.Core.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="SmartThreadPoolCE">
+      <HintPath>$(SplusDependenciesRoot)SPlsWork\SmartThreadPoolCE.dll</HintPath>
+    </Reference>
+    <Reference Include="SplusObjects">
+      <HintPath>$(SplusDependenciesRoot)SPlsWork\SplusObjects.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
+  <Target Name="RestoreSplusDependencies" BeforeTargets="BeforeBuild" Condition="!Exists('$(SplusDependenciesRoot)SPlsWork')">
+    <Message Importance="high" Text="Restoring SIMPL+ references" />
+    <Touch AlwaysCreate="true" Files="$(SplusDependenciesRoot)CrestronModuleCore.usp" />
+    <Exec Command='"C:\Program Files (x86)\Crestron\Simpl\spluscc.exe" \target series3 \build "$(SplusDependenciesRoot)CrestronModuleCore.usp"' />
+  </Target>
+  
   <Target Name="SignAssembly" AfterTargets="Build">
     <Exec Command="$(SolutionDir)Build\bin\AssemblySign.exe $(TargetPath)" />
   </Target>

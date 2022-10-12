@@ -2,17 +2,14 @@
 
 namespace MyCrestronModule
 {
-    public class CrestronModuleImpl : IInitializable
+    public class CrestronModuleImpl : ICrestronModule, IInitializable
     {
-        ICrestronModuleBuilder module;
         ICrestronLogger logger;
-        Input<int> inputA;
-        Input<int> inputB;
-        Output<int> outputA;
+        Input<bool> inputA, inputB;
+        Output<bool> outputA;
 
         public CrestronModuleImpl(ICrestronModuleBuilder module, ICrestronLogger logger)
         {
-            this.module = module;
             this.logger = logger;
             inputA = module.CreateDigitalInput("InputA", InputA_OnChange);
             inputB = module.CreateDigitalInput("InputB", null);
@@ -24,9 +21,9 @@ namespace MyCrestronModule
             this.logger.Trace("Hello World. From IMPL");
         }
 
-        void InputA_OnChange(int value)
+        void InputA_OnChange(bool value)
         {
-            outputA.Value = (ushort)value;
+            outputA.Value = value;
         }
     }
 }

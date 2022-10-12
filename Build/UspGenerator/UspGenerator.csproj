@@ -25,9 +25,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Core\CrestronModuleCore\CrestronModuleCore.csproj" />
   </ItemGroup>
 
