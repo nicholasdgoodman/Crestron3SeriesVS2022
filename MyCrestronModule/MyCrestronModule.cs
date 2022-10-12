@@ -11,9 +11,15 @@ namespace MyCrestronModule
         public CrestronModuleImpl(ICrestronModuleBuilder module, ICrestronLogger logger)
         {
             this.logger = logger;
-            inputA = module.CreateDigitalInput("InputA", InputA_OnChange);
-            inputB = module.CreateDigitalInput("InputB", null);
-            outputA = module.CreateDigitalOutput("OuputA");
+            inputA = module.CreateDigitalInput("DInA", InputA_OnChange);
+            inputB = module.CreateDigitalInput("DInB", null);
+            outputA = module.CreateDigitalOutput("DOutA");
+
+            var soutA = module.CreateStringOutput("SOutA");
+            module.CreateStringInput("SInA", 25, v => soutA.Value = v);
+
+            var aoutA = module.CreateAnalogOutput("AOutA");
+            module.CreateAnalogInput("AInA", v => aoutA.Value = v);
         }
 
         public void Initialize()

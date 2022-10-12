@@ -33,7 +33,7 @@
 
   <Target Name="CompileSimplPlus" AfterTargets="Build">
     <Exec Command="$(SolutionDir)Build\bin\UspGenerator.exe $(TargetPath)" />
-    <!--<Exec Command="&quot;C:\Program Files (x86)\Crestron\Simpl\spluscc.exe&quot; \target series3 \build $(TargetName).usp" WorkingDirectory="$(TargetDir)" />-->
+    <Exec Command="&quot;C:\Program Files (x86)\Crestron\Simpl\spluscc.exe&quot; \target series3 \build $(TargetName).usp" WorkingDirectory="$(TargetDir)" />
   </Target>
   <Target Name="MergeAssemblies" AfterTargets="CompileSimplPlus">
     <Delete Files="$(TargetDir)SPlsWork\$(TargetFileName)" />

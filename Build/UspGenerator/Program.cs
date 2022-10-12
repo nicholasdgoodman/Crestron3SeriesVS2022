@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.IO;
+using MyCrestronModule;
 
 namespace UspGenerator
 {
@@ -32,7 +33,7 @@ namespace UspGenerator
                     if(moduleParameterIndex != -1)
                     {
                         var parameterValues = parameters.Select(pi => pi.ParameterType.IsValueType ? Activator.CreateInstance(pi.ParameterType) : null).ToArray();
-                        var generator = new UshGeneratorModule();
+                        var generator = new UshFileBuilder();
                         parameterValues[moduleParameterIndex] = generator;
                         constructor.Invoke(parameterValues);
                         using (var file = File.OpenWrite(Path.Combine(directory, fileName + ".usp")))
@@ -49,11 +50,11 @@ namespace UspGenerator
             }
         }
 
-        private class UshGeneratorModule : MyCrestronModule.ICrestronModuleBuilder
+        private class UshFileBuilder : ICrestronModuleBuilder
         {
-            private StringBuilder moduleSb = new StringBuilder();
+            private readonly StringBuilder moduleSb = new StringBuilder();
 
-            public UshGeneratorModule()
+            public UshFileBuilder()
             {
                 moduleSb.AppendLine("#DEFAULT_VOLATILE");
                 moduleSb.AppendLine("#ENABLE_STACK_CHECKING");
@@ -61,19 +62,39 @@ namespace UspGenerator
                 moduleSb.AppendLine();
             }
 
-            public MyCrestronModule.Input<bool> CreateDigitalInput(string name, Action<bool> onChange)
+            public Input<ushort> CreateAnalogInput(string name, Action<ushort> onChange)
             {
-                moduleSb.Append("DIGITAL_INPUT ");
-                moduleSb.Append(name);
-                moduleSb.AppendLine(";");
+                moduleSb.AppendLine($"ANALOG_INPUT {name};");
                 return null;
             }
 
-            public MyCrestronModule.Output<bool> CreateDigitalOutput(string name)
+            public Output<ushort> CreateAnalogOutput(string name)
             {
-                moduleSb.Append("DIGITAL_OUTPUT ");
-                moduleSb.Append(name);
-                moduleSb.AppendLine(";");
+                moduleSb.AppendLine($"ANALOG_OUTPUT {name};");
+                return null;
+            }
+
+            public Input<bool> CreateDigitalInput(string name, Action<bool> onChange)
+            {
+                moduleSb.AppendLine($"DIGITAL_INPUT {name};");
+                return null;
+            }
+
+            public Output<bool> CreateDigitalOutput(string name)
+            {
+                moduleSb.AppendLine($"DIGITAL_OUTPUT {name};");
+                return null;
+            }
+
+            public Input<string> CreateStringInput(string name, int maxCapacity, Action<string> onChange)
+            {
+                moduleSb.AppendLine($"STRING_INPUT {name}[{maxCapacity}];");
+                return null;
+            }
+
+            public Output<string> CreateStringOutput(string name)
+            {
+                moduleSb.AppendLine($"STRING_OUTPUT {name};");
                 return null;
             }
 

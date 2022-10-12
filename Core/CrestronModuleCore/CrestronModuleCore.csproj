@@ -28,11 +28,14 @@
       <HintPath>$(WindowsCeSdkRoot)\System.Core.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="SplusObjects">
+      <HintPath>$(SplusDependenciesRoot)SPlsWork\SplusObjects.dll</HintPath>
+    </Reference>
     <Reference Include="SmartThreadPoolCE">
       <HintPath>$(SplusDependenciesRoot)SPlsWork\SmartThreadPoolCE.dll</HintPath>
     </Reference>
-    <Reference Include="SplusObjects">
-      <HintPath>$(SplusDependenciesRoot)SPlsWork\SplusObjects.dll</HintPath>
+    <Reference Include="SimplSharpHelperInterface">
+      <HintPath>$(SplusDependenciesRoot)SPlsWork\SimplSharpHelperInterface.dll</HintPath>
     </Reference>
   </ItemGroup>
 
