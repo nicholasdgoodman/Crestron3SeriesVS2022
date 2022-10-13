@@ -4,16 +4,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MyCrestronModule
+namespace CrestronModuleCore
 {
-    public interface IInitializable
-    {
-        void Initialize();
-    }
-    
     public interface ICrestronModule { }
-
-    public interface ICrestronModuleBuilder
+    public interface IMainMethod
+    {
+        void Main();
+    }
+    public interface ICrestronLogger
+    {
+        void Trace(string format, params object[] args);
+        void Print(string format, params object[] args);
+    }
+    public interface Input<T>
+    {
+        T Value { get; }
+    }
+    public interface Output<T>
+    {
+        T Value { get; set; }
+    }
+    public interface IInputOutputFactory
     {
         Input<bool> CreateDigitalInput(string name, Action<bool> onChange);
         Output<bool> CreateDigitalOutput(string name);
@@ -22,23 +33,6 @@ namespace MyCrestronModule
         Output<ushort> CreateAnalogOutput(string name);
         Input<ushort> CreateAnalogInput(string name, Action<ushort> onChange);
     }
-
-    public interface ICrestronLogger
-    {
-        void Trace(string format, params object[] args);
-        void Print(string format, params object[] args);
-    }
-
-    public interface Input<T>
-    {
-        T Value { get; }
-    }
-
-    public interface Output<T>
-    {
-        T Value { get; set; }
-    }
-
     internal class DigitalInputWrapper : Input<bool>
     {
         DigitalInput input;
@@ -97,7 +91,7 @@ namespace MyCrestronModule
         {
             this.input = input;
         }
-        public ushort Value { get => this.input.Value; }
+        public ushort Value { get => this.input.UshortValue; }
     }
     internal class AnalogOutputWrapper : Output<ushort>
     {
@@ -113,7 +107,7 @@ namespace MyCrestronModule
         }
     }
 
-    public class CrestronModule : SplusObject, ICrestronModuleBuilder, ICrestronLogger
+    public class CrestronModule : SplusObject, IInputOutputFactory, ICrestronLogger
     {
         ICrestronModule moduleImpl;
 
@@ -136,7 +130,7 @@ namespace MyCrestronModule
                 {
                     this.Trace("Module found: {0}", moduleType.Name);
                     this.moduleImpl = moduleType
-                        .GetConstructor(new Type[] { typeof(ICrestronModuleBuilder), typeof(ICrestronLogger) })
+                        .GetConstructor(new Type[] { typeof(IInputOutputFactory), typeof(ICrestronLogger) })
                         .Invoke(new object[] { this, this }) as ICrestronModule;
                 }
             }
@@ -151,8 +145,8 @@ namespace MyCrestronModule
                 var ctx = base.SplusFunctionMainStartCode();
                 this.Trace("CrestronModule FunctionMain");
 
-                var initializableModule = this.moduleImpl as IInitializable;
-                if (initializableModule != null) initializableModule.Initialize();
+                var initializableModule = this.moduleImpl as IMainMethod;
+                if (initializableModule != null) initializableModule.Main();
             }
             catch (Exception ex) { this.ObjectCatchHandler(ex); }
             finally { this.ObjectFinallyHandler(); }
@@ -204,10 +198,9 @@ namespace MyCrestronModule
                 return this;
             }));
         }
-
         public Input<string> CreateStringInput(string name, int maxCapacity, Action<string> onChange)
         {
-            var join = (uint)m_StringOutputList.Count;
+            var join = (uint)(m_AnalogInputList.Count + m_StringInputList.Count);
             var input = new StringInput(join, maxCapacity, this);
             this.Trace("CreateStringInput {0}", join);
             m_StringInputList.Add(join, input);
@@ -216,7 +209,7 @@ namespace MyCrestronModule
         }
         public Output<string> CreateStringOutput(string name)
         {
-            var join = (uint)m_StringOutputList.Count;
+            var join = (uint)(m_AnalogOutputList.Count + m_StringOutputList.Count);
             var output = new StringOutput(join, this);
             this.Trace("CreateStringOutput {0}", join);
             m_StringOutputList.Add(join, output);
@@ -224,6 +217,7 @@ namespace MyCrestronModule
         }
         private void BindStringInput(StringInput input, Action<string> onChange)
         {
+            this.Trace("BindStringInput");
             input.OnSerialChange.Add(new InputChangeHandlerWrapper(o =>
             {
                 this.Trace("OnSerialChange");
@@ -238,10 +232,9 @@ namespace MyCrestronModule
                 return this;
             }));
         }
-
         public Input<ushort> CreateAnalogInput(string name, Action<ushort> onChange)
         {
-            var join = (uint)m_AnalogInputList.Count;
+            var join = (uint)(m_AnalogInputList.Count + m_StringInputList.Count);
             var input = new AnalogInput(join, this);
             this.Trace("CreateAnalogInput {0}", join);
             m_AnalogInputList.Add(join, input);
@@ -250,7 +243,7 @@ namespace MyCrestronModule
         }
         public Output<ushort> CreateAnalogOutput(string name)
         {
-            var join = (uint)m_AnalogOutputList.Count;
+            var join = (uint)(m_AnalogOutputList.Count + m_StringOutputList.Count);
             var output = new AnalogOutput(join, this);
             this.Trace("CreateAnalogOutput {0}", join);
             m_AnalogOutputList.Add(join, output);
@@ -258,6 +251,7 @@ namespace MyCrestronModule
         }
         private void BindAnalogInput(AnalogInput input, Action<ushort> onChange)
         {
+            this.Trace("BindAnalogInput");
             input.OnAnalogChange.Add(new InputChangeHandlerWrapper(o =>
             {
                 this.Trace("OnAnalogChange");

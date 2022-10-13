@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.IO;
-using MyCrestronModule;
+using CrestronModuleCore;
 
 namespace UspGenerator
 {
@@ -29,7 +29,7 @@ namespace UspGenerator
                 foreach(var constructor in constructors)
                 {
                     var parameters = constructor.GetParameters();
-                    var moduleParameterIndex = parameters.ToList().FindIndex(pi => typeof(MyCrestronModule.ICrestronModuleBuilder).IsAssignableFrom(pi.ParameterType));
+                    var moduleParameterIndex = parameters.ToList().FindIndex(pi => typeof(IInputOutputFactory).IsAssignableFrom(pi.ParameterType));
                     if(moduleParameterIndex != -1)
                     {
                         var parameterValues = parameters.Select(pi => pi.ParameterType.IsValueType ? Activator.CreateInstance(pi.ParameterType) : null).ToArray();
@@ -50,7 +50,7 @@ namespace UspGenerator
             }
         }
 
-        private class UshFileBuilder : ICrestronModuleBuilder
+        private class UshFileBuilder : IInputOutputFactory
         {
             private readonly StringBuilder moduleSb = new StringBuilder();
 

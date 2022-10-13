@@ -1,35 +1,57 @@
 ﻿using System;
+using CrestronModuleCore;
 
 namespace MyCrestronModule
 {
-    public class CrestronModuleImpl : ICrestronModule, IInitializable
+    public class CrestronModuleImpl : ICrestronModule, IMainMethod
     {
         ICrestronLogger logger;
         Input<bool> inputA, inputB;
         Output<bool> outputA;
+        Input<string> sInA;
+        Output<string> sOutA;
+        Input<ushort> aInA;
+        Output<ushort> aOutA;
 
-        public CrestronModuleImpl(ICrestronModuleBuilder module, ICrestronLogger logger)
+        public CrestronModuleImpl(IInputOutputFactory ioFactory, ICrestronLogger logger)
         {
             this.logger = logger;
-            inputA = module.CreateDigitalInput("DInA", InputA_OnChange);
-            inputB = module.CreateDigitalInput("DInB", null);
-            outputA = module.CreateDigitalOutput("DOutA");
+            outputA = ioFactory.CreateDigitalOutput("DOutA");
+            
+            inputA = ioFactory.CreateDigitalInput("DInA", dInA_OnChange);
+            inputB = ioFactory.CreateDigitalInput("DInB", null);
 
-            var soutA = module.CreateStringOutput("SOutA");
-            module.CreateStringInput("SInA", 25, v => soutA.Value = v);
+            sOutA = ioFactory.CreateStringOutput("SOutA");
+            
+            sInA = ioFactory.CreateStringInput("SInA", 25, sInA_OnChange);
 
-            var aoutA = module.CreateAnalogOutput("AOutA");
-            module.CreateAnalogInput("AInA", v => aoutA.Value = v);
+            aOutA = ioFactory.CreateAnalogOutput("AOutA");
+            aInA = ioFactory.CreateAnalogInput("AInA", aIn_OnChange);
         }
 
-        public void Initialize()
+
+        public void Main()
         {
-            this.logger.Trace("Hello World. From IMPL");
+            this.logger.Trace("Hello World. From IMPL!");
+            this.sOutA.Value = "Initial Value";
+            this.aOutA.Value = 1234;
         }
 
-        void InputA_OnChange(bool value)
+        private void dInA_OnChange(bool value)
         {
+            this.logger.Trace($"DInA OnChange {value}");
             outputA.Value = value;
+        }
+
+        private void sInA_OnChange(string value)
+        {
+            this.logger.Trace($"SInA OnChange {value}");
+            sOutA.Value = value;
+        }
+        private void aIn_OnChange(ushort value)
+        {
+            this.logger.Trace($"AInA OnChange {value}");
+            aOutA.Value = value;
         }
     }
 }
