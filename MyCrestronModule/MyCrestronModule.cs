@@ -13,26 +13,28 @@ namespace MyCrestronModule
         Input<ushort> aInA;
         Output<ushort> aOutA;
 
-        public CrestronModuleImpl(IInputOutputFactory ioFactory, ICrestronLogger logger)
+        public CrestronModuleImpl(IModuleFactory module, ICrestronLogger logger)
         {
             this.logger = logger;
-            outputA = ioFactory.CreateDigitalOutput("DOutA");
             
-            inputA = ioFactory.CreateDigitalInput("DInA", dInA_OnChange);
-            inputB = ioFactory.CreateDigitalInput("DInB", null);
+            this.inputA = module.DigitalInput("DInA", dInA_OnChange);
+            this.inputB = module.DigitalInput("DInB", null);
+            module.DigitalInputSkip();
 
-            sOutA = ioFactory.CreateStringOutput("SOutA");
-            
-            sInA = ioFactory.CreateStringInput("SInA", 25, sInA_OnChange);
+            this.sInA = module.StringInput("SInA", 25, sInA_OnChange);
+            this.aInA = module.AnalogInput("AInA", aIn_OnChange);
 
-            aOutA = ioFactory.CreateAnalogOutput("AOutA");
-            aInA = ioFactory.CreateAnalogInput("AInA", aIn_OnChange);
+            this.outputA = module.DigitalOutput("DOutA");
+            module.DigitalOutputSkip();
+            module.DigitalOutputSkip();
+
+            this.sOutA = module.StringOutput("SOutA");
+            this.aOutA = module.AnalogOutput("AOutA");
         }
-
 
         public void Main()
         {
-            this.logger.Trace("Hello World. From IMPL!");
+            this.logger.Trace($"Hello World. From IMPL! HostName {System.Net.Dns.GetHostName()}");
             this.sOutA.Value = "Initial Value";
             this.aOutA.Value = 1234;
         }

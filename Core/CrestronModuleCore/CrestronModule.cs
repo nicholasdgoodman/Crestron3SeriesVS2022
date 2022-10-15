@@ -24,14 +24,20 @@ namespace CrestronModuleCore
     {
         T Value { get; set; }
     }
-    public interface IInputOutputFactory
+    public interface IModuleFactory
     {
-        Input<bool> CreateDigitalInput(string name, Action<bool> onChange);
-        Output<bool> CreateDigitalOutput(string name);
-        Input<string> CreateStringInput(string name, int maxCapacity, Action<string> onChange);
-        Output<string> CreateStringOutput(string name);
-        Output<ushort> CreateAnalogOutput(string name);
-        Input<ushort> CreateAnalogInput(string name, Action<ushort> onChange);
+        Input<bool> DigitalInput(string name, Action<bool> onChange);
+        Output<bool> DigitalOutput(string name);
+        void DigitalInputSkip();
+        void DigitalOutputSkip();
+        Input<string> StringInput(string name, int maxCapacity, Action<string> onChange);
+        Output<string> StringOutput(string name);
+        void StringInputSkip();
+        void StringOutputSkip();
+        Input<ushort> AnalogInput(string name, Action<ushort> onChange);
+        Output<ushort> AnalogOutput(string name);
+        void AnalogInputSkip();
+        void AnalogOutputSkip();
     }
     internal class DigitalInputWrapper : Input<bool>
     {
@@ -107,7 +113,7 @@ namespace CrestronModuleCore
         }
     }
 
-    public class CrestronModule : SplusObject, IInputOutputFactory, ICrestronLogger
+    public class CrestronModule : SplusObject, IModuleFactory, ICrestronLogger
     {
         ICrestronModule moduleImpl;
 
@@ -115,13 +121,15 @@ namespace CrestronModuleCore
             string InstanceName,
             string ReferenceID,
             CrestronStringEncoding nEncodingType)
-            : base(InstanceName, ReferenceID, nEncodingType) { }
+            : base(InstanceName, ReferenceID, nEncodingType)
+        { 
+        }
 
         public override void LogosSplusInitialize()
         {
             try
             {
-                this.Trace("CrestronModule LogosSplusInitialize");
+                this.Trace($"CrestronModule LogosSplusInitialize {this.GetSymbolReferenceName()} {this.InstanceName} {this.GetSymbolInstanceName()}");
                 var moduleType = this.GetType()
                     .Assembly.GetTypes()
                     .FirstOrDefault(t => typeof(ICrestronModule).IsAssignableFrom(t) && t.IsClass);
@@ -130,7 +138,7 @@ namespace CrestronModuleCore
                 {
                     this.Trace("Module found: {0}", moduleType.Name);
                     this.moduleImpl = moduleType
-                        .GetConstructor(new Type[] { typeof(IInputOutputFactory), typeof(ICrestronLogger) })
+                        .GetConstructor(new Type[] { typeof(IModuleFactory), typeof(ICrestronLogger) })
                         .Invoke(new object[] { this, this }) as ICrestronModule;
                 }
             }
@@ -165,7 +173,7 @@ namespace CrestronModuleCore
             base.ObjectFinallyHandler();
         }
 
-        public Input<bool> CreateDigitalInput(string name, Action<bool> onChange)
+        public Input<bool> DigitalInput(string name, Action<bool> onChange)
         {
             var join = (uint)m_DigitalInputList.Count;
             var input = new DigitalInput(join, this);
@@ -174,7 +182,7 @@ namespace CrestronModuleCore
             if (onChange != null) BindDigitalInput(input, onChange);
             return new DigitalInputWrapper(input);
         }
-        public Output<bool> CreateDigitalOutput(string name)
+        public Output<bool> DigitalOutput(string name)
         {
             var join = (uint)m_DigitalOutputList.Count;
             var output = new DigitalOutput(join, this);
@@ -198,7 +206,7 @@ namespace CrestronModuleCore
                 return this;
             }));
         }
-        public Input<string> CreateStringInput(string name, int maxCapacity, Action<string> onChange)
+        public Input<string> StringInput(string name, int maxCapacity, Action<string> onChange)
         {
             var join = (uint)(m_AnalogInputList.Count + m_StringInputList.Count);
             var input = new StringInput(join, maxCapacity, this);
@@ -207,7 +215,7 @@ namespace CrestronModuleCore
             if (onChange != null) BindStringInput(input, onChange);
             return new StringInputWrapper(input);
         }
-        public Output<string> CreateStringOutput(string name)
+        public Output<string> StringOutput(string name)
         {
             var join = (uint)(m_AnalogOutputList.Count + m_StringOutputList.Count);
             var output = new StringOutput(join, this);
@@ -232,7 +240,7 @@ namespace CrestronModuleCore
                 return this;
             }));
         }
-        public Input<ushort> CreateAnalogInput(string name, Action<ushort> onChange)
+        public Input<ushort> AnalogInput(string name, Action<ushort> onChange)
         {
             var join = (uint)(m_AnalogInputList.Count + m_StringInputList.Count);
             var input = new AnalogInput(join, this);
@@ -241,7 +249,7 @@ namespace CrestronModuleCore
             if (onChange != null) BindAnalogInput(input, onChange);
             return new AnalogInputWrapper(input);
         }
-        public Output<ushort> CreateAnalogOutput(string name)
+        public Output<ushort> AnalogOutput(string name)
         {
             var join = (uint)(m_AnalogOutputList.Count + m_StringOutputList.Count);
             var output = new AnalogOutput(join, this);
@@ -267,5 +275,29 @@ namespace CrestronModuleCore
             }));
         }
 
+        void IModuleFactory.DigitalInputSkip()
+        {
+            // Do nothing
+        }
+        void IModuleFactory.DigitalOutputSkip()
+        {
+            // Do nothing
+        }
+        void IModuleFactory.StringInputSkip()
+        {
+            // Do nothing
+        }
+        void IModuleFactory.StringOutputSkip()
+        {
+            // Do nothing
+        }
+        void IModuleFactory.AnalogInputSkip()
+        {
+            // Do nothing
+        }
+        void IModuleFactory.AnalogOutputSkip()
+        {
+            // Do nothing
+        }
     }
 }
