@@ -1,43 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  <Import Project="$(SolutionDir)\Core\CrestronModuleCore\CrestronModuleCore.props" />
+  
   <PropertyGroup>
     <TargetFramework>net35</TargetFramework>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
-    <NoStdLib>true</NoStdLib>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <WindowsCeSdkRoot>C:\Program Files (x86)\Microsoft.NET\SDK\CompactFramework\v3.5\WindowsCE</WindowsCeSdkRoot>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ilmerge" Version="3.0.41" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Core\CrestronModuleCore\CrestronModuleCore.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="mscorlib">
-      <HintPath>$(WindowsCeSdkRoot)\mscorlib.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="System">
-      <HintPath>$(WindowsCeSdkRoot)\System.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="System.Core">
-      <HintPath>$(WindowsCeSdkRoot)\System.Core.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
   </ItemGroup>
 
   <Target Name="CompileSimplPlus" AfterTargets="Build">
     <Exec Command="$(SolutionDir)Build\bin\UspGenerator.exe $(TargetPath)" />
     <Exec Command="&quot;C:\Program Files (x86)\Crestron\Simpl\spluscc.exe&quot; \target series3 \build $(TargetName).usp" WorkingDirectory="$(TargetDir)" />
   </Target>
-  <Target Name="MergeAssemblies" AfterTargets="CompileSimplPlus">
+  
+  <!--<Target Name="MergeAssemblies" AfterTargets="CompileSimplPlus">
     <Delete Files="$(TargetDir)SPlsWork\$(TargetFileName)" />
-    <Exec Command="C:\Users\nicho\.nuget\packages\ilmerge\3.0.41\tools\net452\ilmerge.exe /ndebug /targetplatform:&quot;v2,C:\Program Files (x86)\Microsoft.NET\SDK\CompactFramework\v3.5\WindowsCE&quot; /out:&quot;$(TargetPath)&quot; &quot;$(TargetPath)&quot; &quot;$(TargetDir)CrestronModuleCore.dll&quot;" />
+    <Exec Command="$(PkgIlMerge)\tools\net452\ilmerge.exe /ndebug /targetplatform:&quot;v2,C:\Program Files (x86)\Microsoft.NET\SDK\CompactFramework\v3.5\WindowsCE&quot; /out:&quot;$(TargetPath)&quot; &quot;$(TargetPath)&quot; &quot;$(TargetDir)CrestronModuleCore.dll&quot;" />
     <Exec Command="$(SolutionDir)Build\bin\AssemblySign.exe $(TargetPath)" />
-  </Target>
+  </Target>-->
+
+  <Import Project="$(SolutionDir)\Core\CrestronModuleCore\CrestronModuleCore.targets" />
 </Project>

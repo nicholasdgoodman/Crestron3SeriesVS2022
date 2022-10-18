@@ -1,13 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  <Import Project="$(SolutionDir)\Core\CrestronModuleCore\CrestronModuleCore.props" />
+  
   <PropertyGroup>
     <TargetFramework>net35</TargetFramework>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
-    <NoStdLib>true</NoStdLib>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <WindowsCeSdkRoot>C:\Program Files (x86)\Microsoft.NET\SDK\CompactFramework\v3.5\WindowsCE</WindowsCeSdkRoot>
-    <SplusDependenciesRoot>$(BaseIntermediateOutputPath)</SplusDependenciesRoot>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>Nicholas Goodman</Authors>
+    <Company>Niche Computations, LLC</Company>
+    <Description>Non-released package for building Crestron modules directly in C#</Description>
+    <RepositoryUrl>https://github.com/nicholasdgoodman/Crestron3SeriesVS2022</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,38 +17,23 @@
     <EmbeddedResource Remove="lib\**" />
     <None Remove="lib\**" />
   </ItemGroup>
+
   <ItemGroup>
-    <Reference Include="mscorlib">
-      <HintPath>$(WindowsCeSdkRoot)\mscorlib.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="System">
-      <HintPath>$(WindowsCeSdkRoot)\System.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="System.Core">
-      <HintPath>$(WindowsCeSdkRoot)\System.Core.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="SplusObjects">
-      <HintPath>$(SplusDependenciesRoot)SPlsWork\SplusObjects.dll</HintPath>
-    </Reference>
-    <Reference Include="SmartThreadPoolCE">
-      <HintPath>$(SplusDependenciesRoot)SPlsWork\SmartThreadPoolCE.dll</HintPath>
-    </Reference>
-    <Reference Include="SimplSharpHelperInterface">
-      <HintPath>$(SplusDependenciesRoot)SPlsWork\SimplSharpHelperInterface.dll</HintPath>
-    </Reference>
+    <Content Include="*.props;*.targets">
+      <PackagePath>build</PackagePath>
+      <Pack>True</Pack>
+    </Content>
   </ItemGroup>
 
-  <Target Name="RestoreSplusDependencies" BeforeTargets="BeforeBuild" Condition="!Exists('$(SplusDependenciesRoot)SPlsWork')">
-    <Message Importance="high" Text="Restoring SIMPL+ references" />
-    <Touch AlwaysCreate="true" Files="$(SplusDependenciesRoot)CrestronModuleCore.usp" />
-    <Exec Command='"C:\Program Files (x86)\Crestron\Simpl\spluscc.exe" \target series3 \build "$(SplusDependenciesRoot)CrestronModuleCore.usp"' />
-  </Target>
+  <ItemGroup>
+    <PackageReference Include="ilmerge" Version="3.0.41" GeneratePathProperty="true" />
+  </ItemGroup>
+ 
+
   
   <Target Name="SignAssembly" AfterTargets="Build">
     <Exec Command="$(SolutionDir)Build\bin\AssemblySign.exe $(TargetPath)" />
   </Target>
-
+  
+  <Import Project="$(SolutionDir)\Core\CrestronModuleCore\CrestronModuleCore.targets" />
 </Project>
