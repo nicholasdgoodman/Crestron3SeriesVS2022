@@ -1,0 +1,5 @@
+﻿<Project>
+  <PropertyGroup>
+    <CrestronModuleConsolePath>$(MSBuildThisFileDirectory)..\tools\CrestronModule.Build.exe</CrestronModuleConsolePath>
+  </PropertyGroup>
+</Project>

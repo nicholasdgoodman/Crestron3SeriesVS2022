@@ -1,0 +1,17 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>CrestronModule.Build</id>
+    <version>$version$</version>
+    <title>CrestronModule.Build</title>
+    <authors>$authors$</authors>
+    <language>en-US</language>
+    <summary></summary>
+    <description>$description$</description>
+  </metadata>
+  <files>
+    <file src="bin/$configuration$/tools/CrestronModule.Build.exe" target="tools/" />
+    <file src="bin/$configuration$/build/CrestronModule.Build.props" target="build/" />
+    <file src="bin/$configuration$/build/CrestronModule.Build.targets" target="build/" />
+  </files>
+</package>

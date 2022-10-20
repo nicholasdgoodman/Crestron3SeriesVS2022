@@ -6,6 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{6A789246-8AF2-4AA0-857A-3E3116CBFFF5}</ProjectGuid>
     <OutputType>Exe</OutputType>
+    <OutputPath>..\bin\</OutputPath>
     <RootNamespace>AssemblySign</RootNamespace>
     <AssemblyName>AssemblySign</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
@@ -18,7 +19,6 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -27,7 +27,6 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>

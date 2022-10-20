@@ -1,11 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(SolutionDir)\Core\CrestronModuleCore\CrestronModuleCore.props" />
+  <Import Project="$(SolutionDir)\CrestronModule.Core\CrestronModule.Core.props" />
   
   <PropertyGroup>
+    <OutputType>Library</OutputType>
     <TargetFramework>net35</TargetFramework>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <OutputPath>bin\$(Configuration)\lib</OutputPath>
+    <PackageOutputPath>bin\$(Configuration)</PackageOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>0.1.0</Version>
     <Authors>Nicholas Goodman</Authors>
     <Company>Niche Computations, LLC</Company>
     <Description>Non-released package for building Crestron modules directly in C#</Description>
@@ -13,27 +20,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="lib\**" />
-    <EmbeddedResource Remove="lib\**" />
-    <None Remove="lib\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="*.props;*.targets">
       <PackagePath>build</PackagePath>
       <Pack>True</Pack>
     </Content>
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="ilmerge" Version="3.0.41" GeneratePathProperty="true" />
-  </ItemGroup>
- 
-
   
-  <Target Name="SignAssembly" AfterTargets="Build">
-    <Exec Command="$(SolutionDir)Build\bin\AssemblySign.exe $(TargetPath)" />
-  </Target>
-  
-  <Import Project="$(SolutionDir)\Core\CrestronModuleCore\CrestronModuleCore.targets" />
+  <Import Project="$(SolutionDir)\CrestronModule.Core\CrestronModule.Core.targets" />
 </Project>

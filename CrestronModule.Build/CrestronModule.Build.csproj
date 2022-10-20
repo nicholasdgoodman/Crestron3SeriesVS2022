@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <!--<Import Project="$(SolutionDir)\CrestronModule.Core\CrestronModule.Core.props" />-->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net4.7</TargetFramework>
+    <PlatformTarget>x86</PlatformTarget>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <OutDir>bin\$(Configuration)\tools</OutDir>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+    <Authors>Nicholas Goodman</Authors>
+    <Company>Niche Computations, LLC</Company>
+    <Description>Non-released package for building Crestron modules directly in C#</Description>
+    <RepositoryUrl>https://github.com/nicholasdgoodman/Crestron3SeriesVS2022</RepositoryUrl>
+  </PropertyGroup>
+
+  <PropertyGroup>    
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageOutputPath>bin\$(Configuration)</PackageOutputPath>
+    <NuspecFile>$(MSBuildProjectName).nuspec</NuspecFile>
+    <NuspecProperties>configuration=$(Configuration);version=$(Version);authors=$(Authors);description=$(Description)</NuspecProperties>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="*.targets;*.props">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>..\build\%(Content.Identity)</TargetPath>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ilmerge" Version="3.0.41" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CrestronModule.Core\CrestronModule.Core.csproj" />
+  </ItemGroup>
+
+</Project>

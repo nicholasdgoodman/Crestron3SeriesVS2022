@@ -24,8 +24,5 @@
       <Private>false</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\CrestronModuleCore\CrestronModuleCore.csproj" />
-  </ItemGroup>
 
 </Project>

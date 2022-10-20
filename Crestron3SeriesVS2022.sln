@@ -3,28 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrestronProgram", "MyCrestronProgram\MyCrestronProgram.csproj", "{D9933AF7-FC19-4E71-A0CC-E582578B7E44}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{9189C5C5-B1B6-4116-84BA-E1578085E63F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyCrestronModule", "MyCrestronModule\MyCrestronModule.csproj", "{856CA6C5-EE32-45AE-8A10-E19DB168F455}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6A789246-8AF2-4AA0-857A-3E3116CBFFF5} = {6A789246-8AF2-4AA0-857A-3E3116CBFFF5}
-		{9BCE8943-8F5D-42AA-93DF-3FF1A6DC8386} = {9BCE8943-8F5D-42AA-93DF-3FF1A6DC8386}
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{8BDB78E5-2AA8-46BB-89F7-933BCEEC0CE5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssemblySign", "Build\AssemblySign\AssemblySign.csproj", "{6A789246-8AF2-4AA0-857A-3E3116CBFFF5}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UspGenerator", "Build\UspGenerator\UspGenerator.csproj", "{9BCE8943-8F5D-42AA-93DF-3FF1A6DC8386}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrestronModuleCore", "Core\CrestronModuleCore\CrestronModuleCore.csproj", "{015F3B33-AD8A-4CED-B600-168CFA97A370}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AC90D423-B3A4-479B-8D67-72F1CDD6BDBA}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrestronModule.Core", "CrestronModule.Core\CrestronModule.Core.csproj", "{3A8DAD8D-2104-4716-8F7F-DF3775863067}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrestronModule.Build", "CrestronModule.Build\CrestronModule.Build.csproj", "{1986DCC7-E39E-48F5-85F6-BF4177F64C47}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{696E88B4-23C6-42D0-99AC-E96FFBA58F1D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyCrestronModule", "Samples\MyCrestronModule\MyCrestronModule.csproj", "{03AF07B3-0CFF-40DD-BF89-8EA09F2B9DDD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1986DCC7-E39E-48F5-85F6-BF4177F64C47} = {1986DCC7-E39E-48F5-85F6-BF4177F64C47}
 	EndProjectSection
 EndProject
 Global
@@ -33,34 +26,24 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D9933AF7-FC19-4E71-A0CC-E582578B7E44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D9933AF7-FC19-4E71-A0CC-E582578B7E44}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D9933AF7-FC19-4E71-A0CC-E582578B7E44}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D9933AF7-FC19-4E71-A0CC-E582578B7E44}.Release|Any CPU.Build.0 = Release|Any CPU
-		{856CA6C5-EE32-45AE-8A10-E19DB168F455}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{856CA6C5-EE32-45AE-8A10-E19DB168F455}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{856CA6C5-EE32-45AE-8A10-E19DB168F455}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{856CA6C5-EE32-45AE-8A10-E19DB168F455}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6A789246-8AF2-4AA0-857A-3E3116CBFFF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6A789246-8AF2-4AA0-857A-3E3116CBFFF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6A789246-8AF2-4AA0-857A-3E3116CBFFF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6A789246-8AF2-4AA0-857A-3E3116CBFFF5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9BCE8943-8F5D-42AA-93DF-3FF1A6DC8386}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9BCE8943-8F5D-42AA-93DF-3FF1A6DC8386}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9BCE8943-8F5D-42AA-93DF-3FF1A6DC8386}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9BCE8943-8F5D-42AA-93DF-3FF1A6DC8386}.Release|Any CPU.Build.0 = Release|Any CPU
-		{015F3B33-AD8A-4CED-B600-168CFA97A370}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{015F3B33-AD8A-4CED-B600-168CFA97A370}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{015F3B33-AD8A-4CED-B600-168CFA97A370}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{015F3B33-AD8A-4CED-B600-168CFA97A370}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A8DAD8D-2104-4716-8F7F-DF3775863067}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A8DAD8D-2104-4716-8F7F-DF3775863067}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A8DAD8D-2104-4716-8F7F-DF3775863067}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A8DAD8D-2104-4716-8F7F-DF3775863067}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1986DCC7-E39E-48F5-85F6-BF4177F64C47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1986DCC7-E39E-48F5-85F6-BF4177F64C47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1986DCC7-E39E-48F5-85F6-BF4177F64C47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1986DCC7-E39E-48F5-85F6-BF4177F64C47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03AF07B3-0CFF-40DD-BF89-8EA09F2B9DDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03AF07B3-0CFF-40DD-BF89-8EA09F2B9DDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03AF07B3-0CFF-40DD-BF89-8EA09F2B9DDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03AF07B3-0CFF-40DD-BF89-8EA09F2B9DDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{6A789246-8AF2-4AA0-857A-3E3116CBFFF5} = {9189C5C5-B1B6-4116-84BA-E1578085E63F}
-		{9BCE8943-8F5D-42AA-93DF-3FF1A6DC8386} = {9189C5C5-B1B6-4116-84BA-E1578085E63F}
-		{015F3B33-AD8A-4CED-B600-168CFA97A370} = {8BDB78E5-2AA8-46BB-89F7-933BCEEC0CE5}
+		{03AF07B3-0CFF-40DD-BF89-8EA09F2B9DDD} = {696E88B4-23C6-42D0-99AC-E96FFBA58F1D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8DE38167-5329-4CE4-A8BA-37D6A2A1F85F}

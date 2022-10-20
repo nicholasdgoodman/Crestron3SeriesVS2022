@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(SolutionDir)\CrestronModule.Core\CrestronModule.Core.props" />
+  <Import Project="$(SolutionDir)\CrestronModule.Build\bin\build\CrestronModule.Build.props" />
+  
+  <PropertyGroup>
+    <TargetFramework>net35</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ilmerge" Version="3.0.41" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(SolutionDir)\CrestronModule.Core\CrestronModule.Core.csproj" />
+  </ItemGroup>
+  
+  <Import Project="$(SolutionDir)\CrestronModule.Core\CrestronModule.Core.targets" />
+  <Import Project="$(SolutionDir)\CrestronModule.Build\bin\build\CrestronModule.Build.targets" />
+
+</Project>
