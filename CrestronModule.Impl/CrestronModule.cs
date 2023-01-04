@@ -3,119 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CrestronModule.Core;
 
-namespace CrestronModuleCore
+namespace CrestronModule.Impl
 {
-    public interface ICrestronModule { }
-    public interface IMainMethod
-    {
-        void Main();
-    }
-    public interface ICrestronLogger
-    {
-        void Trace(string format, params object[] args);
-        void Print(string format, params object[] args);
-    }
-    public interface Input<T>
-    {
-        T Value { get; }
-    }
-    public interface Output<T>
-    {
-        T Value { get; set; }
-    }
-    public interface IModuleFactory
-    {
-        Input<bool> DigitalInput(string name, Action<bool> onChange);
-        Output<bool> DigitalOutput(string name);
-        void DigitalInputSkip();
-        void DigitalOutputSkip();
-        Input<string> StringInput(string name, int maxCapacity, Action<string> onChange);
-        Output<string> StringOutput(string name);
-        void StringInputSkip();
-        void StringOutputSkip();
-        Input<ushort> AnalogInput(string name, Action<ushort> onChange);
-        Output<ushort> AnalogOutput(string name);
-        void AnalogInputSkip();
-        void AnalogOutputSkip();
-    }
-    internal class DigitalInputWrapper : Input<bool>
-    {
-        DigitalInput input;
-
-        public DigitalInputWrapper(DigitalInput input)
-        {
-            this.input = input;
-        }
-
-        public bool Value
-        {
-            get { return this.input.Value == 0 ? false: true; }
-        }
-    }
-    internal class DigitalOutputWrapper: Output<bool>
-    {
-        DigitalOutput output;
-
-        public DigitalOutputWrapper(DigitalOutput output)
-        {
-            this.output = output;
-        }
-
-        public bool Value
-        {
-            get { return this.output.Value == 0 ? false : true; }
-            set { this.output.Value = value ? 1 : 0; }
-        }
-    }
-    internal class StringInputWrapper : Input<string>
-    {
-        StringInput input;
-        public StringInputWrapper(StringInput input)
-        {
-            this.input = input;
-        }
-        public string Value { get => this.input.Value.ToString(); }
-    }
-    internal class StringOutputWrapper : Output<string>
-    {
-        StringOutput output;
-        public StringOutputWrapper(StringOutput output)
-        {
-            this.output = output;
-        }
-        public string Value
-        {
-            get => this.output.Value.ToString();
-            set => this.output.UpdateValue(value);
-        }
-    }
-    internal class AnalogInputWrapper : Input<ushort>
-    {
-        AnalogInput input;
-        public AnalogInputWrapper(AnalogInput input)
-        {
-            this.input = input;
-        }
-        public ushort Value { get => this.input.UshortValue; }
-    }
-    internal class AnalogOutputWrapper : Output<ushort>
-    {
-        AnalogOutput output;
-        public AnalogOutputWrapper(AnalogOutput output)
-        {
-            this.output = output;
-        }
-        public ushort Value
-        {
-            get => this.output.Value;
-            set => this.output.Value = value;
-        }
-    }
-
     public class CrestronModule : SplusObject, IModuleFactory, ICrestronLogger
     {
         ICrestronModule moduleImpl;
+        uint stringParameterOffset = 10;
 
         public CrestronModule(
             string InstanceName,
@@ -173,24 +68,24 @@ namespace CrestronModuleCore
             base.ObjectFinallyHandler();
         }
 
-        public Input<bool> DigitalInput(string name, Action<bool> onChange)
+        public IInput<bool> DigitalInput(string name, Action<bool> onChange)
         {
             var join = (uint)m_DigitalInputList.Count;
-            var input = new DigitalInput(join, this);
+            var input = new Crestron.Logos.SplusObjects.DigitalInput(join, this);
             this.Trace("CreateDigitalInput {0}", join);
             m_DigitalInputList.Add(join, input);
             if (onChange != null) BindDigitalInput(input, onChange);
-            return new DigitalInputWrapper(input);
+            return new DigitalInput(input);
         }
-        public Output<bool> DigitalOutput(string name)
+        public IOutput<bool> DigitalOutput(string name)
         {
             var join = (uint)m_DigitalOutputList.Count;
-            var output = new DigitalOutput(join, this);
+            var output = new Crestron.Logos.SplusObjects.DigitalOutput(join, this);
             this.Trace("CreateDigitalOutput {0}", join);
             m_DigitalOutputList.Add(join, output);
-            return new DigitalOutputWrapper(output);
+            return new DigitalOutput(output);
         }
-        private void BindDigitalInput(DigitalInput input, Action<bool> onChange)
+        private void BindDigitalInput(Crestron.Logos.SplusObjects.DigitalInput input, Action<bool> onChange)
         {
             input.OnDigitalChange.Add(new InputChangeHandlerWrapper(o =>
             {
@@ -206,24 +101,24 @@ namespace CrestronModuleCore
                 return this;
             }));
         }
-        public Input<string> StringInput(string name, int maxCapacity, Action<string> onChange)
+        public IInput<string> StringInput(string name, int maxCapacity, Action<string> onChange)
         {
             var join = (uint)(m_AnalogInputList.Count + m_StringInputList.Count);
-            var input = new StringInput(join, maxCapacity, this);
+            var input = new Crestron.Logos.SplusObjects.StringInput(join, maxCapacity, this);
             this.Trace("CreateStringInput {0}", join);
             m_StringInputList.Add(join, input);
             if (onChange != null) BindStringInput(input, onChange);
-            return new StringInputWrapper(input);
+            return new StringInput(input);
         }
-        public Output<string> StringOutput(string name)
+        public IOutput<string> StringOutput(string name)
         {
             var join = (uint)(m_AnalogOutputList.Count + m_StringOutputList.Count);
-            var output = new StringOutput(join, this);
+            var output = new Crestron.Logos.SplusObjects.StringOutput(join, this);
             this.Trace("CreateStringOutput {0}", join);
             m_StringOutputList.Add(join, output);
-            return new StringOutputWrapper(output);
+            return new StringOutput(output);
         }
-        private void BindStringInput(StringInput input, Action<string> onChange)
+        private void BindStringInput(Crestron.Logos.SplusObjects.StringInput input, Action<string> onChange)
         {
             this.Trace("BindStringInput");
             input.OnSerialChange.Add(new InputChangeHandlerWrapper(o =>
@@ -240,24 +135,24 @@ namespace CrestronModuleCore
                 return this;
             }));
         }
-        public Input<ushort> AnalogInput(string name, Action<ushort> onChange)
+        public IInput<ushort> AnalogInput(string name, Action<ushort> onChange)
         {
             var join = (uint)(m_AnalogInputList.Count + m_StringInputList.Count);
-            var input = new AnalogInput(join, this);
+            var input = new Crestron.Logos.SplusObjects.AnalogInput(join, this);
             this.Trace("CreateAnalogInput {0}", join);
             m_AnalogInputList.Add(join, input);
             if (onChange != null) BindAnalogInput(input, onChange);
-            return new AnalogInputWrapper(input);
+            return new AnalogInput(input);
         }
-        public Output<ushort> AnalogOutput(string name)
+        public IOutput<ushort> AnalogOutput(string name)
         {
             var join = (uint)(m_AnalogOutputList.Count + m_StringOutputList.Count);
-            var output = new AnalogOutput(join, this);
+            var output = new Crestron.Logos.SplusObjects.AnalogOutput(join, this);
             this.Trace("CreateAnalogOutput {0}", join);
             m_AnalogOutputList.Add(join, output);
-            return new AnalogOutputWrapper(output);
+            return new AnalogOutput(output);
         }
-        private void BindAnalogInput(AnalogInput input, Action<ushort> onChange)
+        private void BindAnalogInput(Crestron.Logos.SplusObjects.AnalogInput input, Action<ushort> onChange)
         {
             this.Trace("BindAnalogInput");
             input.OnAnalogChange.Add(new InputChangeHandlerWrapper(o =>
@@ -275,6 +170,13 @@ namespace CrestronModuleCore
             }));
         }
 
+        public IParameter<string> StringParameter(string name, int maxCapacity)
+        {
+            var parameter = new Crestron.Logos.SplusObjects.StringParameter(this.stringParameterOffset, this);
+            m_ParameterList.Add(this.stringParameterOffset, parameter);
+            this.stringParameterOffset++;
+            return new StringParameter(parameter);
+        }
         void IModuleFactory.DigitalInputSkip()
         {
             // Do nothing
@@ -296,6 +198,10 @@ namespace CrestronModuleCore
             // Do nothing
         }
         void IModuleFactory.AnalogOutputSkip()
+        {
+            // Do nothing
+        }
+        void IModuleFactory.StringParameterSkip()
         {
             // Do nothing
         }

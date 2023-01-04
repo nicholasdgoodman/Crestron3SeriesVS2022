@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="CrestronModule.Core.props" />
+  <Import Project="$(SolutionDir)\CrestronModule.Core\CrestronModule.Core.props" />
+  <Import Project="CrestronModule.Impl.props" />
   
   <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -30,6 +31,15 @@
       <Pack>True</Pack>
     </Content>
   </ItemGroup>
-  
-  <Import Project="CrestronModule.Core.targets" />
+
+  <ItemGroup>
+    <None Remove="CrestronModule.Impl.props" />
+    <None Remove="CrestronModule.Impl.targets" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CrestronModule.Core\CrestronModule.Core.csproj" />
+  </ItemGroup>
+
+  <Import Project="CrestronModule.Impl.targets" />
 </Project>

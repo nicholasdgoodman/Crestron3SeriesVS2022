@@ -20,15 +20,4 @@
       <Private>false</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="SplusObjects">
-      <HintPath>$(SplusDependenciesRoot)SPlsWork\SplusObjects.dll</HintPath>
-    </Reference>
-    <Reference Include="SmartThreadPoolCE">
-      <HintPath>$(SplusDependenciesRoot)SPlsWork\SmartThreadPoolCE.dll</HintPath>
-    </Reference>
-    <Reference Include="SimplSharpHelperInterface">
-      <HintPath>$(SplusDependenciesRoot)SPlsWork\SimplSharpHelperInterface.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 </Project>

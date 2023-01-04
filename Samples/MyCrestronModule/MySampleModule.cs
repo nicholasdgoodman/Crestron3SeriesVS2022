@@ -1,21 +1,21 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
-using CrestronModuleCore;
+using CrestronModule.Core;
 
 namespace MyCrestronModule
 {
-    public class CrestronModuleImpl : ICrestronModule, IMainMethod
+    public class MySampleModule : ICrestronModule, IMainMethod
     {
         ICrestronLogger logger;
-        Input<bool> inputA, inputB;
-        Output<bool> outputA;
-        Input<string> sInA;
-        Output<string> sOutA;
-        Input<ushort> aInA;
-        Output<ushort> aOutA;
+        IInput<bool> inputA, inputB;
+        IOutput<bool> outputA;
+        IInput<string> sInA;
+        IOutput<string> sOutA;
+        IInput<ushort> aInA;
+        IOutput<ushort> aOutA;
 
-        public CrestronModuleImpl(IModuleFactory module, ICrestronLogger logger)
+        public MySampleModule(IModuleFactory module, ICrestronLogger logger)
         {
             this.logger = logger;
             

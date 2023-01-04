@@ -11,6 +11,7 @@
   </metadata>
   <files>
     <file src="bin/$configuration$/tools/CrestronModule.Build.exe" target="tools/" />
+    <file src="bin/$configuration$/tools/CrestronModule.Core.dll" target="tools/" />
     <file src="bin/$configuration$/build/CrestronModule.Build.props" target="build/" />
     <file src="bin/$configuration$/build/CrestronModule.Build.targets" target="build/" />
   </files>

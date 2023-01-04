@@ -1,12 +1,14 @@
 ﻿<Project>
-  <Target Name="CompileSimplPlus" AfterTargets="Build">
-    <Exec Command="$(CrestronModuleConsolePath) /usp $(TargetPath)" />
-    <Exec Command="&quot;C:\Program Files (x86)\Crestron\Simpl\spluscc.exe&quot; \target series3 \build $(TargetName).usp" WorkingDirectory="$(TargetDir)" />
+  <Target Name="CompileSimplPlus" AfterTargets="Build" Condition="'$(CompileSimplPlus)'!='false'">
+    <PropertyGroup Condition="'$(SimplPlusModuleFileName)' == ''">
+      <SimplPlusModuleFileName>$(TargetName).usp</SimplPlusModuleFileName>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(SimplProjectDir)' == ''">
+      <SimplProjectDir>$(SolutionDir)SIMPL</SimplProjectDir>
+    </PropertyGroup>
+    <Exec Command="$(CrestronModuleConsolePath) /usp $(TargetPath) $(SimplProjectDir)" />
   </Target>
-  <Target Name="MergeAssemblies" AfterTargets="CompileSimplPlus">
-    <Exec Command="$(ILMergeConsolePath) /ndebug /targetplatform:&quot;v2,C:\Program Files (x86)\Microsoft.NET\SDK\CompactFramework\v3.5\WindowsCE&quot; /out:&quot;$(TargetPath)&quot; &quot;$(TargetPath)&quot; &quot;$(TargetDir)CrestronModule.Core.dll&quot;" />
-  </Target>
-  <Target Name="SignAssembly" AfterTargets="MergeAssemblies">
+  <Target Name="SignAssembly" AfterTargets="Build">
     <Exec Command="$(CrestronModuleConsolePath) /sign $(TargetPath)" />
   </Target>
 </Project>

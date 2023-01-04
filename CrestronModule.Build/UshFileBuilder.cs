@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text;
-using CrestronModuleCore;
+using CrestronModule.Core;
 
 namespace CrestronModule.Build
 {
@@ -15,13 +15,13 @@ namespace CrestronModule.Build
             moduleSb.AppendLine();
         }
 
-        public Input<ushort> AnalogInput(string name, Action<ushort> onChange)
+        public IInput<ushort> AnalogInput(string name, Action<ushort> onChange)
         {
             moduleSb.AppendLine($"ANALOG_INPUT {name};");
             return null;
         }
 
-        public Output<ushort> AnalogOutput(string name)
+        public IOutput<ushort> AnalogOutput(string name)
         {
             moduleSb.AppendLine($"ANALOG_OUTPUT {name};");
             return null;
@@ -36,13 +36,13 @@ namespace CrestronModule.Build
             moduleSb.AppendLine($"ANALOG_OUTPUT _SKIP_;");
         }
 
-        public Input<bool> DigitalInput(string name, Action<bool> onChange)
+        public IInput<bool> DigitalInput(string name, Action<bool> onChange)
         {
             moduleSb.AppendLine($"DIGITAL_INPUT {name};");
             return null;
         }
 
-        public Output<bool> DigitalOutput(string name)
+        public IOutput<bool> DigitalOutput(string name)
         {
             moduleSb.AppendLine($"DIGITAL_OUTPUT {name};");
             return null;
@@ -57,27 +57,37 @@ namespace CrestronModule.Build
             moduleSb.AppendLine($"DIGITAL_OUTPUT _SKIP_;");
         }
 
-        public Input<string> StringInput(string name, int maxCapacity, Action<string> onChange)
+        public IInput<string> StringInput(string name, int maxCapacity, Action<string> onChange)
         {
             moduleSb.AppendLine($"STRING_INPUT {name}[{maxCapacity}];");
             return null;
         }
 
-        public Output<string> StringOutput(string name)
+        public IOutput<string> StringOutput(string name)
         {
             moduleSb.AppendLine($"STRING_OUTPUT {name};");
+            return null;
+        }
+
+        public IParameter<string> StringParameter(string name, int maxCapacity)
+        {
+            moduleSb.AppendLine($"STRING_PARAMETER {name}[{maxCapacity}];");
             return null;
         }
 
         public void StringInputSkip()
         {
             moduleSb.AppendLine($"STRING_INPUT _SKIP_;");
-
         }
 
         public void StringOutputSkip()
         {
             moduleSb.AppendLine($"STRING_OUTPUT _SKIP_;");
+        }
+
+        public void StringParameterSkip()
+        {
+            moduleSb.AppendLine($"STRING_PARAMETER _SKIP_;");
         }
 
         public override string ToString()

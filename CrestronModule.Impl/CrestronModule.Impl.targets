@@ -1,0 +1,7 @@
+﻿<Project>
+  <Target Name="RestoreSplusDependencies" BeforeTargets="BeforeBuild" Condition="!Exists('$(SplusDependenciesRoot)SPlsWork')">
+    <Message Importance="high" Text="Restoring SIMPL+ references" />
+    <Touch AlwaysCreate="true" Files="$(SplusDependenciesRoot)CrestronModuleCore.usp" />
+    <Exec Command="&quot;$(CrestronSimplRoot)\spluscc.exe&quot; \target series3 \build &quot;$(SplusDependenciesRoot)CrestronModuleCore.usp&quot;" />
+  </Target>
+</Project>

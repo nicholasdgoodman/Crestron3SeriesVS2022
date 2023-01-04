@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="$(SolutionDir)\CrestronModule.Core\CrestronModule.Core.props" />
-  <Import Project="$(SolutionDir)\CrestronModule.Build\bin\build\CrestronModule.Build.props" />
+  <Import Project="$(SolutionDir)\CrestronModule.Build\bin\$(Configuration)\build\CrestronModule.Build.props" />
   
   <PropertyGroup>
     <TargetFramework>net35</TargetFramework>
@@ -9,13 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ilmerge" Version="3.0.41" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)\CrestronModule.Core\CrestronModule.Core.csproj" />
+    <ProjectReference Include="$(SolutionDir)\CrestronModule.Impl\CrestronModule.Impl.csproj" />
   </ItemGroup>
   
   <Import Project="$(SolutionDir)\CrestronModule.Core\CrestronModule.Core.targets" />
-  <Import Project="$(SolutionDir)\CrestronModule.Build\bin\build\CrestronModule.Build.targets" />
+  <Import Project="$(SolutionDir)\CrestronModule.Build\bin\$(Configuration)\build\CrestronModule.Build.targets" />
 
 </Project>
