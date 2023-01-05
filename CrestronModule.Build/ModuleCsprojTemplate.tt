@@ -1,0 +1,41 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="C:\Users\nicho\source\repos\Crestron3SeriesVS2022\CrestronModule.Core\CrestronModule.Core.props" />
+  <Import Project="C:\Users\nicho\source\repos\Crestron3SeriesVS2022\CrestronModule.Impl\CrestronModule.Impl.props" />
+  <Import Project="C:\Users\nicho\source\repos\Crestron3SeriesVS2022\CrestronModule.Build\bin\$(Configuration)\build\CrestronModule.Build.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net35</TargetFramework>
+    <OutDir>SPlsWork</OutDir>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <SkipResolvePackageAssets>true</SkipResolvePackageAssets>
+    <CompileSimplPlus>false</CompileSimplPlus>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <Compile Remove="**\*.cs" />
+    <Compile Include="$(OutDir)\$(AssemblyName).cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="$(ParentName)">
+      <HintPath>$(ParentPath)</HintPath>
+    </Reference>
+    <Reference Include="CrestronModule.Core">
+      <HintPath>C:\Users\nicho\source\repos\Crestron3SeriesVS2022\CrestronModule.Impl\bin\Debug\net35\CrestronModule.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CrestronModule.Impl">
+      <HintPath>C:\Users\nicho\source\repos\Crestron3SeriesVS2022\CrestronModule.Impl\bin\Debug\net35\CrestronModule.Impl.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Import Project="C:\Users\nicho\source\repos\Crestron3SeriesVS2022\CrestronModule.Build\bin\$(Configuration)\build\CrestronModule.Build.targets" />
+
+</Project>

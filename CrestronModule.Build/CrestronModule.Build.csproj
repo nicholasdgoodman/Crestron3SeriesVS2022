@@ -38,5 +38,31 @@
   <ItemGroup>
     <ProjectReference Include="..\CrestronModule.Core\CrestronModule.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="ModuleCsprojTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ModuleCsprojTemplate.cs</LastGenOutput>
+    </None>
+    <None Update="ModuleCsTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ModuleCsTemplate.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="ModuleCsprojTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ModuleCsprojTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="ModuleCsTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ModuleCsTemplate.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
 
 </Project>

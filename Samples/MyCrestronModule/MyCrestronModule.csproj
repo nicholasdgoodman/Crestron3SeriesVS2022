@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="$(SolutionDir)\CrestronModule.Core\CrestronModule.Core.props" />
+  <Import Project="$(SolutionDir)\CrestronModule.Impl\CrestronModule.Impl.props" />
   <Import Project="$(SolutionDir)\CrestronModule.Build\bin\$(Configuration)\build\CrestronModule.Build.props" />
   
   <PropertyGroup>
@@ -13,6 +14,7 @@
   </ItemGroup>
   
   <Import Project="$(SolutionDir)\CrestronModule.Core\CrestronModule.Core.targets" />
+  <Import Project="$(SolutionDir)\CrestronModule.Impl\CrestronModule.Impl.targets" />
   <Import Project="$(SolutionDir)\CrestronModule.Build\bin\$(Configuration)\build\CrestronModule.Build.targets" />
 
 </Project>

@@ -1,14 +1,32 @@
 ﻿<Project>
-  <Target Name="CompileSimplPlus" AfterTargets="Build" Condition="'$(CompileSimplPlus)'!='false'">
+
+  <Target Name="InitializeProps" BeforeTargets="Build">
+    <PropertyGroup>
+      <ModuleIntermediateDirectory>$(ProjectDir)$(BaseIntermediateOutputPath)ModuleImpl</ModuleIntermediateDirectory>
+    </PropertyGroup>
+  </Target>
+  
+  <Target Name="SignAssembly" AfterTargets="Build">
+    <Exec Command="$(CrestronModuleConsolePath) /sign $(TargetPath)" />
+  </Target>
+  
+  <Target Name="CompileSimplPlus" AfterTargets="SignAssembly" Condition="'$(CompileSimplPlus)'!='false'">
     <PropertyGroup Condition="'$(SimplPlusModuleFileName)' == ''">
       <SimplPlusModuleFileName>$(TargetName).usp</SimplPlusModuleFileName>
     </PropertyGroup>
     <PropertyGroup Condition="'$(SimplProjectDir)' == ''">
       <SimplProjectDir>$(SolutionDir)SIMPL</SimplProjectDir>
     </PropertyGroup>
-    <Exec Command="$(CrestronModuleConsolePath) /usp $(TargetPath) $(SimplProjectDir)" />
+    <Message Importance="high" Text="CompileSimplPlus $(ModuleIntermediateDirectory) $(ProjectDir)" />
+    <Exec Command="$(CrestronModuleConsolePath) /usp $(TargetPath) $(ModuleIntermediateDirectory)" />
   </Target>
-  <Target Name="SignAssembly" AfterTargets="Build">
-    <Exec Command="$(CrestronModuleConsolePath) /sign $(TargetPath)" />
+  
+  <Target Name="CompileCsModules" AfterTargets="CompileSimplPlus">
+    <ItemGroup>
+      <CsModule Include="obj\ModuleImpl\SPlsWork\*.cs" />
+    </ItemGroup>
+    <Message Importance="high" Text="Building module implementations..." />
+    <MSBuild Projects="obj\ModuleImpl\$(ProjectName).g.csproj" Properties="ParentName=$(TargetName);ParentPath=$(TargetPath);SplusDependenciesRoot=$(SplusDependenciesRoot);AssemblyName=%(CsModule.FileName)" />
   </Target>
+  
 </Project>

@@ -1,8 +1,7 @@
-﻿using Crestron.Logos.SplusObjects;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
+
+using Crestron.Logos.SplusObjects;
 using CrestronModule.Core;
 
 namespace CrestronModule.Impl

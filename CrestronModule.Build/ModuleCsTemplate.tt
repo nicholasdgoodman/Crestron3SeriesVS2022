@@ -1,30 +1,43 @@
-﻿using Crestron.Logos.SplusObjects;
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
+using Crestron.Logos.SplusObjects;
 using CrestronModule.Core;
 
-namespace CrestronModule.Impl.__TYPE_NAME__
+using AnalogInput = CrestronModule.Impl.AnalogInput;
+using AnalogOutput = CrestronModule.Impl.AnalogOutput;
+using DigitalInput = CrestronModule.Impl.DigitalInput;
+using DigitalOutput = CrestronModule.Impl.DigitalOutput;
+using StringInput = CrestronModule.Impl.StringInput;
+using StringOutput = CrestronModule.Impl.StringOutput;
+using StringParameter = CrestronModule.Impl.StringParameter;
+
+namespace <#= Namespace #>
 {
-    public class CrestronModule : SplusObject, IModuleFactory, ICrestronLogger
+    public class _<#= TypeName #>_CrestronModuleImpl : SplusObject, IModuleFactory, ICrestronLogger
     {
         ICrestronModule moduleImpl;
         uint stringParameterOffset = 10;
 
-        public CrestronModule(
+        public _<#= TypeName #>_CrestronModuleImpl(
             string InstanceName,
             string ReferenceID,
             CrestronStringEncoding nEncodingType)
             : base(InstanceName, ReferenceID, nEncodingType)
-        { 
+        {
         }
 
         public override void LogosSplusInitialize()
         {
             try
             {
-                this.moduleImpl = new __TYPE_NAME__(this,this);
+                this.moduleImpl = new <#= Namespace #>.<#= TypeName #>(this, this);
             }
             catch (Exception ex) { this.ObjectCatchHandler(ex); }
             finally { this.ObjectFinallyHandler(); }
@@ -196,3 +209,7 @@ namespace CrestronModule.Impl.__TYPE_NAME__
         }
     }
 }
+<#+
+public string Namespace { get; set; }
+public string TypeName { get; set; }
+#>

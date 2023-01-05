@@ -15,17 +15,22 @@ namespace CrestronModule.Build
             try
             {
                 var command = args[0];
-                var filename1 = args[1];
-                var filename2 = args.Length > 2 ? args[2] : null;
-
+                var param1 = args[1];
+                var param2 = args.Length > 2 ? args[2] : null;
+                
                 switch (command)
                 {
                     case "/sign":
-                        SignAssembly(filename1);
+                        Console.WriteLine($"Signing assembly {param1}");
+                        SignAssembly(param1);
+                        break;
+                    case "/cs":
+                        Console.WriteLine($"Generating Module Implementation {param1} {param2}");
+                        GenerateCs(param1, param2);
                         break;
                     case "/usp":
-                        Console.WriteLine($"Generating Crestron Module: {filename1} {filename2}");
-                        GenerateUsh(filename1, filename2);
+                        Console.WriteLine($"Generating Crestron Module: {param1} {param2}");
+                        GenerateUsh(param1, param2);
                         break;
                     default:
                         throw new Exception($"Unknown command: {command}");
@@ -53,6 +58,13 @@ namespace CrestronModule.Build
             signMethod.Invoke(signer, new object[] { Path.Combine(directory, @"CrestronModule.Impl.dll") });
         }
 
+        static void GenerateCs(string defaultNamespace, string filename) 
+        {
+            var template = new ModuleCsTemplate() { Namespace = defaultNamespace };
+
+            File.WriteAllText(filename, template.TransformText());
+        }
+
         static void GenerateUsh(string source, string outDir)
         {
             var assembly = Assembly.LoadFrom(source);
@@ -70,16 +82,18 @@ namespace CrestronModule.Build
             var generator = new UshFileBuilder();
             var instance = moduleCtor.Invoke(new object[] { generator, null });
 
-            //Console.WriteLine($"Module Name? {moduleType.Name} {moduleType.Name.EndsWith("Module")} {moduleType.Name.Substring(0, moduleType.Name.Length - \"Module\".Length)}");
-
             var moduleName = moduleType.Name.EndsWith("Module") ?
                 moduleType.Name.Substring(0, moduleType.Name.Length - "Module".Length) :
                 moduleType.Name;
 
             Directory.CreateDirectory(outDir);
-            var destination = Path.Combine(outDir, $"{moduleName}.usp");
-            Console.WriteLine($"Creating module: {destination}");
-            using (var file = File.OpenWrite(destination))
+
+            var uspPath = Path.Combine(outDir, $"{moduleName}.usp");
+            var csPath = Path.Combine(outDir, "SPlsWork", $"{moduleName}.cs");
+            var csprojPath = Path.Combine(outDir, $"{moduleType.Namespace}.g.csproj");
+
+            Console.WriteLine($"Creating module: {uspPath}");
+            using (var file = File.OpenWrite(uspPath))
             {
                 var data = Encoding.UTF8.GetBytes(generator.ToString());
                 file.Write(data, 0, data.Length);
@@ -87,12 +101,22 @@ namespace CrestronModule.Build
 
             Console.WriteLine("Compiling module...");
             System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(
-                Path.Combine(SimplPlusInstallDir, "spluscc.exe"), $"/build \"{destination}\" /target series3")
+                Path.Combine(SimplPlusInstallDir, "spluscc.exe"), $"/build \"{uspPath}\" /target series3")
             {
                 WorkingDirectory = outDir,
                 CreateNoWindow = true,
                 WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden
             }).WaitForExit();
+
+            Console.WriteLine("Generating updated CS file...");
+            var csTemplate = new ModuleCsTemplate() 
+            { 
+                Namespace = moduleType.Namespace,
+                TypeName = moduleType.Name
+            };
+            File.WriteAllText(csPath, csTemplate.TransformText());
+            var csprojTempate = new ModuleCsprojTemplate();
+            File.WriteAllText(csprojPath, csprojTempate.TransformText());
 
             Console.WriteLine("Done!");
         }
